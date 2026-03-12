@@ -5,6 +5,14 @@ const display = document.getElementById("display")
 
 function press(value){
     if(display.value.length > 20) return 
+
+    const operators = "+-*/"
+    const lastChar = display.value.slice(-1)
+
+    if(operators.includes(lastChar) && operators.includes(value)){
+        return
+    }
+    
     display.value += value
 }
 
