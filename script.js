@@ -1,23 +1,31 @@
 let happiness = 0
 let lastUsed = Date.now()
 
+const display = document.getElementById("display")
+
 function press(value){
-    document.getElementById("display").value += value
+    if(display.value.length > 20) return 
+    display.value += value
 }
 
 function clearDisplay(){
-    document.getElementById("display").value = ""
+    display.value = ""
+    setFace("normal")
+}
+
+function backspace() {
+    display.value = display.value.slice(0, -1)
 }
 
 function calculate(){
-    let display = document.getElementById("display")
     try {
-        let result = eval(display.value)
+        let result = Function('"use strict";return (' + display.value + ')')()
         display.value = result
         increaseHappiness()
     } catch {
         display.value = "Error"
         setFace("sad")
+        setTimeout(clearDisplay,1500)
     }
 }
 
@@ -59,3 +67,28 @@ setInterval(()=>{
         setFace("sad")
     }
 },5000)
+
+//keyboard support
+document.addEventListener("keydown", (e)=>{
+    if(!isNaN(e.key) || "+-*/.".includes(e.key)){
+        press(e.key)
+    }
+
+    if(e.key === "Enter"){
+        calculate()
+    }
+
+    if(e.key === "Backspace"){
+        backspace()
+    }
+
+    if(e.key === "Escape"){
+        clearDisplay()
+    }
+})
+
+document.querySelectorAll("button").forEach(btn => {
+    btn.addEventListener("click", () => {
+        btn.blur()
+    })
+})
