@@ -52,6 +52,11 @@ function setFace(state){
     let face = document.getElementById("face")
     let moodText = document.getElementById("faceMood")
 
+    face.style.transform = "scale(1.1)"
+    setTimeout(()=>{
+        face.style.transform = "scale(1)"
+    },200)
+
     if(state === "happy"){
         face.src = "assets/face_happy.svg"
         moodText.innerText = "Mood: Happy 😄"
@@ -83,6 +88,7 @@ document.addEventListener("keydown", (e)=>{
     }
 
     if(e.key === "Enter"){
+        e.preventDefault()
         calculate()
     }
 
@@ -92,6 +98,10 @@ document.addEventListener("keydown", (e)=>{
 
     if(e.key === "Escape"){
         clearDisplay()
+    }
+
+    if(e.key === "d"){
+        document.body.classList.toggle("dark")
     }
 })
 
